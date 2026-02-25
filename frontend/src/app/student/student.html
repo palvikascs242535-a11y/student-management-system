@@ -1,0 +1,81 @@
+<div class="header-bar">
+  <h2>Welcome {{ adminName }} 👋</h2>
+  <button class="btn danger" (click)="logout()">Logout</button>
+</div>
+
+<h2 class="center-title">🎓Student Management</h2>
+
+<div class="top-bar">
+  <div class="stat-card">
+    <h3>Total Students</h3>
+    <p>{{ totalStudents }}</p>
+  </div>
+
+  <input class="search-box" placeholder="Search" [(ngModel)]="searchText">
+</div>
+
+<!-- ADD STUDENT (only admin & boss) -->
+<div class="card" *ngIf="canEdit">
+  <h3>{{ isEdit ? 'Edit Student' : 'Add Student' }}</h3>
+
+  <input placeholder="Roll No" [(ngModel)]="student.rollNo">
+  <input placeholder="Name" [(ngModel)]="student.name">
+  <input placeholder="Email" [(ngModel)]="student.email">
+  <input placeholder="Phone" [(ngModel)]="student.phone">
+  <input placeholder="Course" [(ngModel)]="student.course">
+  <input placeholder="Year" [(ngModel)]="student.year">
+
+  <button class="btn" (click)="submitStudent()">
+    {{ isEdit ? 'Update' : 'Add' }}
+  </button>
+
+  <button *ngIf="isEdit" class="btn danger" (click)="resetForm()">Cancel</button>
+</div>
+
+<!-- STUDENT TABLE -->
+<div class="card">
+  <h3>Student List</h3>
+
+  <!-- 👑 PENDING APPROVALS (Boss Only) -->
+<div class="card" *ngIf="isBoss && pendingUsers.length > 0">
+  <h3>🔔 Pending Approvals</h3>
+
+  <div *ngFor="let user of pendingUsers" class="pending-item">
+    <b>{{ user.name }}</b> ({{ user.email }})
+    
+    <button class="btn" (click)="approveUser(user._id)">Approve</button>
+    <button class="btn danger" (click)="rejectUser(user._id)">Reject</button>
+  </div>
+</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Course</th>
+        <th>Year</th>
+        <th *ngIf="canEdit">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of filteredStudents()">
+        <td>{{ s.rollNo }}</td>
+        <td>{{ s.name }}</td>
+        <td>{{ s.email }}</td>
+        <td>{{ s.phone }}</td>
+        <td>{{ s.course }}</td>
+        <td>{{ s.year }}</td>
+
+        <td *ngIf="canEdit">
+          <button class="btn" (click)="editStudent(s)">Edit</button>
+          <button class="btn danger" (click)="deleteStudent(s._id)">Delete</button>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>

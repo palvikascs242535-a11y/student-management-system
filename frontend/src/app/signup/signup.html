@@ -1,0 +1,21 @@
+<div class="signup-card">
+  <h2>Create Account</h2>
+
+  <input placeholder="Full Name" [(ngModel)]="name">
+  <input placeholder="Email" [(ngModel)]="email">
+  <input type="password" placeholder="Password" [(ngModel)]="password">
+
+  <select [(ngModel)]="role">
+    <option value="user">User</option>
+    <option value="admin">Admin</option>
+  </select>
+
+  <button (click)="signup()">Signup</button>
+
+  <p class="msg">{{ message }}</p>
+
+  <p class="login-link">
+    Already have account?
+    <a routerLink="/">Login</a>
+  </p>
+</div>
